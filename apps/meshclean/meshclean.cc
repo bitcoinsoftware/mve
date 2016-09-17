@@ -27,6 +27,7 @@ struct AppSettings
     bool clean_degenerated = true;
     bool delete_scale = false;
     bool delete_conf = false;
+    bool delete_normals = false;
     bool delete_colors = false;
     float conf_threshold = 1.0f;
     float conf_percentile = -1.0f;
@@ -77,6 +78,7 @@ main (int argc, char** argv)
     args.add_option('n', "no-clean", false, "Prevents cleanup of degenerated faces");
     args.add_option('\0', "delete-scale", false, "Delete scale attribute from mesh");
     args.add_option('\0', "delete-conf", false, "Delete confidence attribute from mesh");
+    args.add_option('\0', "delete-normals", false, "Delete normal attribute from mesh");
     args.add_option('\0', "delete-color", false, "Delete color attribute from mesh");
     args.set_description("The application cleans degenerated faces resulting "
         "from MC-like algorithms. Vertices below a confidence threshold and "
@@ -103,6 +105,8 @@ main (int argc, char** argv)
             conf.delete_scale = true;
         else if (arg->opt->lopt == "delete-conf")
             conf.delete_conf = true;
+        else if (arg->opt->lopt == "delete-normals")
+            conf.delete_normals = true;
         else if (arg->opt->lopt == "delete-color")
             conf.delete_colors = true;
         else
@@ -139,13 +143,13 @@ main (int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    if (mesh->get_faces().empty()
+    /*if (mesh->get_faces().empty()
         && (conf.clean_degenerated || conf.component_size > 0))
     {
         std::cerr << "Error: Components/faces cleanup "
             "requested, but mesh has no faces." << std::endl;
         return EXIT_FAILURE;
-    }
+    }*/
 
     /* Remove low-confidence geometry. */
     if (conf.conf_percentile > 0.0f)
@@ -189,6 +193,7 @@ main (int argc, char** argv)
         mve::geom::SavePLYOptions ply_opts;
         ply_opts.write_vertex_colors = !conf.delete_colors;
         ply_opts.write_vertex_confidences = !conf.delete_conf;
+        ply_opts.write_vertex_normals = !conf.delete_normals;
         ply_opts.write_vertex_values = !conf.delete_scale;
         mve::geom::save_ply_mesh(mesh, conf.out_mesh, ply_opts);
     }

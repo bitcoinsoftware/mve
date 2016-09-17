@@ -270,7 +270,7 @@ load_ply_mesh (std::string const& filename)
                         v_format.push_back(PLY_V_FLOAT_V);
                     else if (header[2] == "confidence")
                         v_format.push_back(PLY_V_FLOAT_CONF);
-                    else if (header[2] == "value")
+                    else if (header[2] == "radius")//else if (header[2] == "value")
                         v_format.push_back(PLY_V_FLOAT_VALUE);
                     else
                         v_format.push_back(PLY_V_IGNORE_FLOAT);
@@ -767,7 +767,8 @@ save_ply_mesh (TriangleMesh::ConstPtr mesh, std::string const& filename,
 
     if (write_vvalues)
     {
-        out << "property float value" << std::endl;
+        //out << "property float value" << std::endl;
+        out << "property float radius" << std::endl;
     }
 
     if (face_amount)

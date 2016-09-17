@@ -159,7 +159,7 @@ SampleIO::open_file (std::string const& filename)
                 this->stream.props.push_back(mve::geom::PLY_V_FLOAT_NZ);
             else if (tokens[1] == "float" && tokens[2] == "confidence")
                 this->stream.props.push_back(mve::geom::PLY_V_FLOAT_CONF);
-            else if (tokens[1] == "float" && tokens[2] == "value")
+            else if (tokens[1] == "float" && tokens[2] == "radius")//else if (tokens[1] == "float" && tokens[2] == "value")
                 this->stream.props.push_back(mve::geom::PLY_V_FLOAT_VALUE);
             else if (tokens[1] == "float" && (tokens[2] == "red"
                 || tokens[2] == "diffuse_red" || tokens[2] == "r"))
